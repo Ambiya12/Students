@@ -1,10 +1,12 @@
 import chalk from 'chalk';
 import http from 'http';
 import fs from 'fs';
+import axios from 'axios';
 
 const PORT = 8000;
 const HOST = 'localhost';
 const FILE_PATH = './hello.txt';
+const GOOGLE_HTML_PATH = './google.html';
 
 fs.writeFile(FILE_PATH, 'Hello World!', (err) => {
     if (err) {
@@ -21,6 +23,24 @@ fs.writeFile(FILE_PATH, 'Hello World!', (err) => {
         console.log('File Content:', data);
     });
 });
+
+const fetchGoogle = async () => {
+    try {
+        const response = await axios.get('http://www.google.com');
+        
+        fs.writeFile('google.html', response.data, (err) => {
+            if (err) {
+                console.error('Error writing file:', err);
+                return;
+            }
+            console.log('Google homepage saved as google.html');
+        });
+    } catch (err) {
+        console.error('Error fetching Google:', err);
+    }
+};
+
+fetchGoogle();
 
 console.log(chalk.red('Daphnée'));
 console.log(chalk.blue('Fadia'));
